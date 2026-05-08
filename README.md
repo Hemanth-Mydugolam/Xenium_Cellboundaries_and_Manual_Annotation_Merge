@@ -75,7 +75,7 @@ pip install -r requirements.txt
 
 **Step 6 — Configure paths in the script**
 
-Open `Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py` in a text editor and update the three paths near the bottom of the file inside the `main()` function:
+Open `Cell_boundaries_manual_merge_pipeline.py` in a text editor and update the three paths near the bottom of the file inside the `main()` function:
 
 ```python
 # Path to your Xenium bundle folder
@@ -95,7 +95,7 @@ manual_annotations = output_dir / "manual_annotated_geojson.geojson"
 **Step 7 — Run the pipeline**
 
 ```
-python Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py
+python Cell_boundaries_manual_merge_pipeline.py
 ```
 
 ---
@@ -143,7 +143,7 @@ pip install -r requirements.txt
 
 **Step 6 — Configure paths in the script**
 
-Open `Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py` in a text editor and update the three paths inside the `main()` function:
+Open `Cell_boundaries_manual_merge_pipeline.py` in a text editor and update the three paths inside the `main()` function:
 
 ```python
 # Path to your Xenium bundle folder
@@ -161,7 +161,7 @@ Use forward slashes `/` for paths on macOS.
 **Step 7 — Run the pipeline**
 
 ```bash
-python3 Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py
+python3 Cell_boundaries_manual_merge_pipeline.py
 ```
 
 ---
