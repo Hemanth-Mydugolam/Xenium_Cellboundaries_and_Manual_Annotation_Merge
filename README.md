@@ -196,3 +196,9 @@ python3 Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py
 | `FileNotFoundError` for manual annotations | `manual_annotations` path is wrong | Ensure the GeoJSON file exists at the specified path |
 | `ModuleNotFoundError` | Dependencies not installed | Re-run `pip install -r requirements.txt` with the virtual environment active |
 | `venv\Scripts\activate` fails on Windows | Execution policy restriction | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` in PowerShell first |
+
+---
+
+## Contact
+
+If you have any questions, please send an email to hemanth.mydugolam@utdallas.edu
