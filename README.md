@@ -187,6 +187,22 @@ python3 Olivia_Farkas_Cell_boundaries_manual_merge_pipeline_HM.py
 
 ---
 
+## Design Note & Tradeoff
+
+The pipeline gives manual annotations full priority: **any Xenium cell that overlaps — even partially — with a manually annotated region is dropped entirely** from the merged output.
+
+**Why this is intentional:** Manual annotations represent curated, expert-reviewed cell boundaries. Keeping a conflicting Xenium cell alongside them would introduce duplicate or inconsistent segmentations for the same physical cell.
+
+**The tradeoff to be aware of:** Because the removal criterion is overlap (not containment), a Xenium cell that only grazes the edge of a manually annotated region is still removed in full. This means:
+
+- Cells at the boundary of a manually annotated region may be lost even if only a small portion of their area overlaps.
+- The resulting merged file could have small coverage gaps at those boundaries — areas not covered by any cell polygon.
+- The total cell count in `merged.geojson` will always be ≤ (Xenium cells + manual annotations), never additive.
+
+**When this matters most:** If the manually annotated region has irregular or tightly packed boundaries, a larger number of Xenium cells at the periphery may be discarded. In such cases, visually inspecting the merged output in QuPath around the annotation boundaries is recommended to confirm coverage is acceptable.
+
+---
+
 ## Troubleshooting
 
 | Error | Likely cause | Fix |
