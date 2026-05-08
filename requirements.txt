@@ -1,0 +1,4 @@
+pandas
+geojson
+shapely
+tifffile
