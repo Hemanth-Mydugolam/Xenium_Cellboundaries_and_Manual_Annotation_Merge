@@ -55,7 +55,7 @@ Press `Win + R`, type `cmd`, and press Enter. Or open PowerShell from the Start 
 **Step 3 — Navigate to the project folder**
 
 ```
-cd "C:\path\to\Olivia_Farkas_McGill"
+cd "C:\path\to\project_folder"
 ```
 
 **Step 4 — (Optional but recommended) Create a virtual environment**
@@ -123,7 +123,7 @@ Press `Cmd + Space`, type `Terminal`, and press Enter.
 **Step 3 — Navigate to the project folder**
 
 ```bash
-cd "/path/to/Olivia_Farkas_McGill"
+cd "/path/to/project_folder"
 ```
 
 **Step 4 — (Optional but recommended) Create a virtual environment**
