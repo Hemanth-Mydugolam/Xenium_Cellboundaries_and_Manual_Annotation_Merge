@@ -32,16 +32,16 @@ class XeniumBoundaryConverter:
         self.output_dir.mkdir(exist_ok=True, parents=True)
 
         self.boundary_file = self.main_path / "cell_boundaries.csv.gz"
-        self.morphology_tiff = (
-            #self.main_path / "morphology_focus" /"ch0002_18s.ome.tif"
-            self.main_path / "morphology_focus" / "morphology_focus_0001.ome.tif"
-        )
+
+        morphology_dir = self.main_path / "morphology_focus"
+        candidates = sorted(morphology_dir.glob("*.ome.tif"))
+        if not candidates:
+            raise FileNotFoundError(f"No *.ome.tif file found in: {morphology_dir}")
+        self.morphology_tiff = candidates[0]
+        print(f"[INFO] Using OME-TIFF: {self.morphology_tiff.name}")
 
         if not self.boundary_file.exists():
             raise FileNotFoundError(f"Missing: {self.boundary_file}")
-
-        if not self.morphology_tiff.exists():
-            raise FileNotFoundError(f"Missing: {self.morphology_tiff}")
 
         self.pixel_um_x, self.pixel_um_y = self._get_pixel_sizes()
         print(f"[INFO] Microns per pixel → X: {self.pixel_um_x}, Y: {self.pixel_um_y}")

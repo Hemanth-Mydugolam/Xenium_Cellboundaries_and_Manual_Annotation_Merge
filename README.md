@@ -12,7 +12,7 @@ This pipeline processes 10x Genomics Xenium spatial transcriptomics data to:
 | File | Description |
 |------|-------------|
 | `<xenium_bundle>/cell_boundaries.csv.gz` | Xenium output: per-cell polygon vertex coordinates in microns |
-| `<xenium_bundle>/morphology_focus/ch0002_18s.ome.tif` | OME-TIFF used to extract pixel size (µm/px) from metadata |
+| `<xenium_bundle>/morphology_focus/*.ome.tif` | Any OME-TIFF in this folder — the pipeline auto-detects the first match and uses it to extract pixel size (µm/px) |
 | `<output_dir>/manual_annotated_geojson.geojson` | Manually drawn cell boundaries (e.g., exported from QuPath) |
 
 ---
@@ -208,7 +208,7 @@ The pipeline gives manual annotations full priority: **any Xenium cell that over
 | Error | Likely cause | Fix |
 |-------|-------------|-----|
 | `FileNotFoundError: Missing: .../cell_boundaries.csv.gz` | `main_path` is wrong | Double-check the Xenium bundle folder path |
-| `FileNotFoundError: Missing: .../morphology_focus/ch0002_18s.ome.tif` | Wrong bundle or missing file | Verify the `morphology_focus/` subfolder exists with this file |
+| `FileNotFoundError: No *.ome.tif file found in: .../morphology_focus` | No OME-TIFF present in the folder | Verify the `morphology_focus/` subfolder exists and contains at least one `.ome.tif` file |
 | `FileNotFoundError` for manual annotations | `manual_annotations` path is wrong | Ensure the GeoJSON file exists at the specified path |
 | `ModuleNotFoundError` | Dependencies not installed | Re-run `pip install -r requirements.txt` with the virtual environment active |
 | `venv\Scripts\activate` fails on Windows | Execution policy restriction | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` in PowerShell first |
