@@ -33,7 +33,8 @@ class XeniumBoundaryConverter:
 
         self.boundary_file = self.main_path / "cell_boundaries.csv.gz"
         self.morphology_tiff = (
-            self.main_path / "morphology_focus" /"ch0002_18s.ome.tif"
+            #self.main_path / "morphology_focus" /"ch0002_18s.ome.tif"
+            self.main_path / "morphology_focus" / "morphology_focus_0001.ome.tif"
         )
 
         if not self.boundary_file.exists():
