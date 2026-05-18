@@ -2,6 +2,7 @@
 
 This pipeline processes 10x Genomics Xenium spatial transcriptomics data to:
 
+0. **Pre-Step** — Validate manually annotated GeoJSON files to confirm all features are Polygon geometries compatible with Xenium import.
 1. **Stage 1** — Convert `cell_boundaries.csv.gz` (micron coordinates) into pixel-scaled GeoJSON files suitable for QuPath.
 2. **Stage 2** — Merge the Xenium-derived cell boundaries with a manually annotated GeoJSON, replacing any Xenium cells that overlap the manual annotations.
 
@@ -21,6 +22,8 @@ This pipeline processes 10x Genomics Xenium spatial transcriptomics data to:
 
 | File | Description |
 |------|-------------|
+| `geojson_qc_log.xlsx` | Excel QC report from the pre-step validation (PASS/FAIL per GeoJSON file) |
+| `<annotation_subfolder>/non_polygon_exports/*.geojson` | Non-Polygon features extracted from any FAIL file during validation |
 | `<output_dir>/cell_boundaries_pixel_scaled.geojson` | Standard GeoJSON (pixel coordinates) |
 | `<output_dir>/cell_boundaries_qupath.geojson` | QuPath-compatible GeoJSON with classification metadata |
 | `<output_dir>/merged.geojson` | Final merged GeoJSON (Xenium cells + manual annotations) |
@@ -92,6 +95,26 @@ manual_annotations = output_dir / "manual_annotated_geojson.geojson"
 - `output_dir` is where all results will be written. It will be created automatically if it does not exist.
 - `manual_annotations` must point to the QuPath-exported GeoJSON containing your manually drawn cell boundaries.
 
+**Step 6a — (Recommended) Validate manual annotation GeoJSON files**
+
+Before running the pipeline, confirm that your manually annotated GeoJSON files contain only Polygon geometries. Open `manual_annotations_geojson_file_validation.py` in a text editor and update the two paths near the top:
+
+```python
+ROOT_DIR    = r"C:\path\to\folder\containing\annotation\subfolders"
+OUTPUT_FILE = "geojson_qc_log.xlsx"
+```
+
+- `ROOT_DIR` must point to the folder whose immediate subfolders each contain the manually annotated `.geojson` files to validate.
+- `OUTPUT_FILE` is the name of the Excel QC report written to the current working directory.
+
+Then run:
+
+```
+python manual_annotations_geojson_file_validation.py
+```
+
+Open the generated `geojson_qc_log.xlsx`. Any file marked **FAIL** contains non-Polygon features — correct these in QuPath before proceeding to Step 7.
+
 **Step 7 — Run the pipeline**
 
 ```
@@ -158,6 +181,26 @@ manual_annotations = output_dir / "manual_annotated_geojson.geojson"
 
 Use forward slashes `/` for paths on macOS.
 
+**Step 6a — (Recommended) Validate manual annotation GeoJSON files**
+
+Before running the pipeline, confirm that your manually annotated GeoJSON files contain only Polygon geometries. Open `manual_annotations_geojson_file_validation.py` in a text editor and update the two paths near the top:
+
+```python
+ROOT_DIR    = "/path/to/folder/containing/annotation/subfolders"
+OUTPUT_FILE = "geojson_qc_log.xlsx"
+```
+
+- `ROOT_DIR` must point to the folder whose immediate subfolders each contain the manually annotated `.geojson` files to validate.
+- `OUTPUT_FILE` is the name of the Excel QC report written to the current working directory.
+
+Then run:
+
+```bash
+python3 manual_annotations_geojson_file_validation.py
+```
+
+Open the generated `geojson_qc_log.xlsx`. Any file marked **FAIL** contains non-Polygon features — correct these in QuPath before proceeding to Step 7.
+
 **Step 7 — Run the pipeline**
 
 ```bash
@@ -167,6 +210,18 @@ python3 Cell_boundaries_manual_merge_pipeline.py
 ---
 
 ## How the Pipeline Works
+
+### Pre-Step — Validate Manual Annotation GeoJSON Files
+
+Run `manual_annotations_geojson_file_validation.py` before the main pipeline.
+
+1. Iterates over every immediate subfolder inside the specified root directory.
+2. Loads every `.geojson` file found in each subfolder and counts geometry types per file.
+3. Marks each file **PASS** (all features are Polygons) or **FAIL** (non-Polygon features present).
+4. Extracts non-Polygon features from any file and saves them as a QuPath-compatible GeoJSON under `{subfolder}/non_polygon_exports/` for review and correction.
+5. Writes a formatted Excel QC report (`geojson_qc_log.xlsx`) summarising results across all files.
+
+Correct any FAIL files in QuPath before running Stage 1.
 
 ### Stage 1 — Cell Boundaries to GeoJSON
 
